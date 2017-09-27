@@ -2,6 +2,12 @@
 
 DD_AGENT_CONF="/app/.apt/opt/datadog-agent/agent/datadog.conf"
 
+# Disable agent unless web dyno
+if [[ $DYNO != web.* ]]; then
+  echo "DataDog agent not enabled on non-web dyno $DYNO"
+  DISABLE_DATADOG_AGENT=1
+fi
+
 # Prefered Datadog env var name
 if [[ $DD_API_KEY ]]; then
   sed -i -e "s/^[# ]*api_key:.*$/api_key: ${DD_API_KEY}/" $DD_AGENT_CONF
@@ -36,6 +42,7 @@ if [[ $DD_HISTOGRAM_PERCENTILES ]]; then
 elif [[ $DATADOG_HISTOGRAM_PERCENTILES ]]; then
   sed -i -e "s/^[# ]*histogram_percentiles:.*$/histogram_percentiles: ${DATADOG_HISTOGRAM_PERCENTILES}/" $DD_AGENT_CONF
 fi
+
 
 # Enable Developer Mode
 sed -i -e "s/^[# ]*developer_mode:.*$/developer_mode: yes/" $DD_AGENT_CONF
