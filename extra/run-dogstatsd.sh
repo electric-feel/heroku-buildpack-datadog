@@ -4,9 +4,9 @@ DD_AGENT_CONF="/app/.apt/opt/datadog-agent/agent/datadog.conf"
 
 # Disable agent unless web dyno
 if [[ $DYNO == web.* ]]; then
-  DD_HOSTNAME="ef-core-web"
+  DD_HOSTNAME="ef-core"
 elif [[ $DYNO == *worker.* ]]; then
-  DD_HOSTNAME="ef-core-worker"
+  DD_HOSTNAME="ef-core"
 else
   echo "DataDog agent not enabled on non-web dyno $DYNO"
   DISABLE_DATADOG_AGENT=1
